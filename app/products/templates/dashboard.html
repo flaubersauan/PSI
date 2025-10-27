@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Flaubin store</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="dashboard-body">
+
+    <header class="dash-header">
+        <h1 class="titulo">Flaubin Store</h1>
+        <div class="usuario-info">
+            <span>Olá, <strong>{{ usuario }}</strong></span>
+            <a href="{{ url_for('auth.logout') }}" class="btn-sair">Sair</a>
+        </div>
+    </header>
+
+    <div class="dash-container">
+
+        <div class="nova-produto-box">
+            <h2>Adicionar novo produto</h2>
+            <form method="POST" class="form-produto">
+                <input type="text" name="nome_produto" placeholder="Digite o nome do produto..." required>
+                <input type="number" name="preco_produto" placeholder="Digite o preço do produto..." required>
+                <input type="text" name="descricao" placeholder="Descrição..." required>
+                <button type="submit" class="btn-adicionar">Adicionar</button>
+            </form>
+        </div>
+
+        
+
+        <div class="lista-produtos-box">
+            <h2>Seus produtos</h2>
+            <ul>
+                {% for produto in produtos %}
+                    <li class="produto-item">
+                        <span>{{ produto.nome }}</span>
+                        <form method="POST" action="{{ url_for('products.remover_produto', id_produto=produto.id) }}">
+                            <button type="submit" class="btn-remover">X</button>
+                        </form>
+                    </li>
+
+                    <form method="POST" action="{{ url_for('products.editar_produto', id_produto=produto.id) }}" class="form-editar">
+                    <input type="text" name="novo_produto" placeholder="Editar produto..." required>
+                    <button type="submit" class="btn-editar">Editar</button>
+            </form>
+                {% else %}
+                    <li class="produto-vazia">Nenhum produto cadastrado ainda </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+    </div>
+
+</body>
+</html>
